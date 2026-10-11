@@ -1,13 +1,13 @@
 'use client'
 
-import { FormEvent, useEffect, useState } from 'react'
+import { FormEvent, Suspense, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 
 type Mode = 'signup' | 'login' | 'reset'
 
-export default function AuthPage() {
+function AuthForm() {
   const searchParams = useSearchParams()
   const nextParam = searchParams.get('next')
   const safeNext =
@@ -240,5 +240,19 @@ export default function AuthPage() {
         </p>
       </div>
     </main>
+  )
+}
+
+export default function AuthPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="min-h-screen bg-[#F5F8F3] px-4 py-8 text-[#103D2B]">
+          Loading...
+        </main>
+      }
+    >
+      <AuthForm />
+    </Suspense>
   )
 }
